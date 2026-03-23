@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Vitals form</title>
 </head>
 <body>
@@ -10,7 +11,8 @@
     <form action="">
         <div class="patient_name">
             <label for="patient_name">Patient's Name:</label>
-            <input type="text" name="patient_name" id="patient_name">
+            <!-- <p class="patients_records_in_form">Patient's records go here</p> -->
+            <input type="text" name="patient_name" id="patient_name" readonly>
         </div>
 
         <div class="visit_date">
@@ -29,13 +31,13 @@
         </div>
 
         <div class="bmi">
-            <label for="bmi">BMI</label>
-            <input type="number" name="bmi" id="bmi">
+            <label for="bmi">BMI: </label>
+            <input type="number" name="bmi" id="bmi" readonly>
         </div>
 
-        <input type="button" value="Cancel">
+        <input type="button" value="Cancel" id="cancel_button">
         
-        <input type="button" value="Submit">
+        <input type="button" value="Submit" id="submit_button">
     </form>
 </body>
 </html>
