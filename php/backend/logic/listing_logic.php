@@ -1,5 +1,5 @@
 <?php
-require("../../backend/config/database.php");
+require(__DIR__ . "/../config/database.php");
 
 // required details: Patients_name, Age, BMI Status [Underweight, Normal, Overweight], Last Assessment Date
 if (isset($_POST['patients_listing_date']) && $_POST['patients_listing_date'] != '') {

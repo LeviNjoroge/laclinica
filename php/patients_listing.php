@@ -1,3 +1,7 @@
+<?php
+require("./backend/logic/listing_logic.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

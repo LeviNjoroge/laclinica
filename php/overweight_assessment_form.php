@@ -1,3 +1,7 @@
+<?php
+require("./backend/logic/assessment_logic.php")
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +13,7 @@
 <body>
     <div class="container">
         <h2>Overweight Assessment Form</h2>
-        <form action="" method="POST">
+        <form action="./backend/actions/save_assessments.php" method="POST">
             <div class="patient_name">
                 <label for="patient_name">Patient's Name:</label>
                 <input type="text" name="patient_name" id="patient_name" value="<?php echo $first_name . " " . $middle_name . " " . $last_name ?>" readonly>
@@ -36,6 +40,7 @@
                 <label for="comments">Comments:</label>
                 <textarea name="comments" id="comments"></textarea>
             </div>
+            <input type="hidden" name="form_type" value="overweight">
 
             <input type="button" value="Cancel" id="cancel_button" onclick="clearForm()">
 
