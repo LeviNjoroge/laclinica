@@ -8,8 +8,8 @@ $patients_listing_query = "SELECT FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BI
                             ON P.PATIENT_NUMBER = V.PATIENT_NUMBER
                             AND V.VISIT_DATE = (SELECT MAX(V2.VISIT_DATE)
 			                                    FROM VITALS_RECORDS V2
-			                                    WHERE V2.PATIENT_NUMBER = P.PATIENT_NUMBER)
-";
+			                                    WHERE V2.PATIENT_NUMBER = P.PATIENT_NUMBER)";
+
 $patients_listing = mysqli_query($conn, $patients_listing_query);
 
 $current_date = date("Y-m-d");
@@ -30,6 +30,19 @@ function calculate_AGE($date_of_birth){
     $age = $today->diff($dob)->y;
     return $age;
 }
+
+if (isset($_POST['patients_listing_date']) && $_POST['patients_listing_date'] != '') {
+    $date = $_POST['patients_listing_date'];
+    $patients_listing_query = "SELECT FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, BMI, VISIT_DATE
+                                FROM PATIENTS_REGISTRATION P
+                                JOIN VITALS_RECORDS V
+                                ON P.PATIENT_NUMBER = V.PATIENT_NUMBER
+                                AND V.VISIT_DATE = (SELECT MAX(V2.VISIT_DATE)
+			                                    FROM VITALS_RECORDS V2
+			                                    WHERE V2.PATIENT_NUMBER = P.PATIENT_NUMBER)
+                                AND V.VISIT_DATE = '$date'";
+    $patients_listing = mysqli_query($conn, $patients_listing_query);
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,11 +57,20 @@ function calculate_AGE($date_of_birth){
     <div class="container">
         <h2>Patients Listing</h2>
         <div class="patients_listing_date">
-            <!-- Filter records by this date -->
-            <label for="patients_listing_date">Date:</label>
-            <input type="date" name="patients_listing_date" id="patients_listing_date">
-            <input type="button" value="reset">
+            <form action="" method="post">
+                <!-- Filter records by this date -->
+                <label for="patients_listing_date">Date:</label>
+                <input type="date" name="patients_listing_date" value="<?php echo $_POST['patients_listing_date'] ?? '' ?>">
+                <input type="submit" value="Filter">
+            </form>
         </div>
+        <?php
+            if (isset($date)) {
+                echo "<p>Showing records for: ".$date."</p>";
+            } else {
+                echo "<p>Showing latest records</p>";
+            }
+        ?>
 
         <table>
             <thead>
@@ -67,7 +89,7 @@ function calculate_AGE($date_of_birth){
                                 echo "<tr>";
                                 echo "<td>".$patient['FIRST_NAME']." ".$patient['MIDDLE_NAME']." ".$patient['LAST_NAME']."</td>";
                                 echo "<td>".calculate_AGE($patient["DATE_OF_BIRTH"])."</td>";
-                                echo "<td>".BMI_Comment($patient['BMI'])."</td>";
+                                echo "<td>".(isset($patient['BMI']) ? BMI_Comment($patient['BMI']) : 'N/A')."</td>";
                                 echo "<td>".$patient['VISIT_DATE']."</td>";
                                 echo "</tr>";
                             }
@@ -76,7 +98,7 @@ function calculate_AGE($date_of_birth){
                             for($i = 0; $i< 4; $i++){
                                 echo "<td> N/A </td>";
                             }
-                        echo "<tr>";
+                        echo "</tr>";
                         }
                     ?>
             </tbody>
