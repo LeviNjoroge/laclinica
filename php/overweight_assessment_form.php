@@ -16,16 +16,17 @@ if (isset($_POST["submit"])) {
     // check the date, if its same as the last one on the system, the record is not stored
     $check_last_date = mysqli_query($conn, "SELECT VISIT_DATE from OVERWEIGHT_ASSESSMENT_RECORDS WHERE PATIENT_NUMBER = '$patient_number' AND VISIT_DATE = '$visit_date'");
     if (mysqli_num_rows($check_last_date) > 0) {
-        $message = "User already registered on that day!";
+        echo '<script> alert("User already registered on that day!" ); </script>';
     } else {
         // send the data to the database...
         $query = "INSERT INTO OVERWEIGHT_ASSESSMENT_RECORDS VALUES('$patient_number', '$visit_date', '$gen_health', '$been_on_diet', '$comments')";
         if (mysqli_query($conn, $query)) {
-            $message = "General assessment successfully recorded!";
-            header("Location: patients_listing.php");
+            echo '<script> alert("General assessment successfully recorded!") </script>';
+            header("Location: patients_listing.php" );
             exit;
         } else {
-            $message = "Error saving details!";
+            echo '<script> alert("Error saving details!") </script>';
+            exit;
         }
     }
 }
@@ -80,9 +81,5 @@ if (isset($_POST["submit"])) {
             document.querySelector("form").reset();
         }
     </script>
-    <?php if (isset($message)){
-            echo '<script> alert('.$message . '); </script>';
-        }
-    ?>
 </body>
 </html>

@@ -1,16 +1,11 @@
 <?php
-// session_start();
+session_start();
 require("./backend/config/database.php");
 
-// $first_name = $_SESSION["first_name"];
-// $middle_name = $_SESSION["middle_name"];
-// $last_name = $_SESSION["last_name"];
-// $patient_number = $_SESSION["patient_number"];
-
-$first_name = "Joe";
-$middle_name = "Underson";
-$last_name = "Doe";
-$patient_number = 101;
+$first_name = $_SESSION["first_name"];
+$middle_name = $_SESSION["middle_name"];
+$last_name = $_SESSION["last_name"];
+$patient_number = $_SESSION["patient_number"];
 
 if (isset($_POST["submit"])) {
     $visit_date = $_POST["visit_date"];
@@ -21,17 +16,17 @@ if (isset($_POST["submit"])) {
     // check the date, if its same as the last one on the system, the record is not stored
     $check_last_date = mysqli_query($conn, "SELECT VISIT_DATE from ASSESSMENT_RECORDS WHERE PATIENT_NUMBER = '$patient_number' AND VISIT_DATE = '$visit_date'");
     if (mysqli_num_rows($check_last_date) > 0) {
-            $message = "User already registered on that day!";
+            echo "</script>alert('User already registered on that day!')</script>";
     } else {
         // send the data to the database...
         $query = "INSERT INTO ASSESSMENT_RECORDS VALUES('$patient_number', '$visit_date', '$gen_health', '$on_drugs', '$comments')";
         if(mysqli_query($conn, $query)){
-            $message = "General assessment successfully recorded!";
+            echo "</script>alert('General assessment successfully recorded!')</script>";
             header("Location: patients_listing.php");
             exit;
         }
         else{
-            $message = "Error saving details!";
+            echo "</script>alert('Error saving details!')</script>";
         }
     }   
 }
@@ -82,7 +77,6 @@ if (isset($_POST["submit"])) {
         </form>
     </div>
     <script>
-        alert(<?php if(isset($message))echo $message?>)
         function clearForm() {
             document.querySelector("form").reset();
         }

@@ -12,7 +12,6 @@ if (isset($_POST["submit"])) {
     $reg_date = $_POST['registration_date'];
 
     // check if patient already exists
-    $message;
     $check_patient = mysqli_query($conn, "SELECT * FROM PATIENTS_REGISTRATION WHERE patient_number = '$patient_number'");
     if (mysqli_num_rows($check_patient) > 0) {
         echo '<script> alert("Patient already registered!") </script>';
@@ -90,11 +89,6 @@ if (isset($_POST["cancel"])) {
             <input type="submit" value="Submit" id="submit_button" name="submit">
         </form>
     </div>
-    <?php if (isset($message)): ?>
-            <script>
-                alert("<?= $message ?>");
-            </script>
-    <?php endif; ?>
     <script>
         function clearForm() {
             document.querySelector("form").reset();
