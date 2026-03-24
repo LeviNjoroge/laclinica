@@ -1,3 +1,9 @@
+<?php
+require("./backend/config/database.php");
+
+// required details: Patients_name, Age, BMI Status []
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
