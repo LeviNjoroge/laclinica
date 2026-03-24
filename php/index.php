@@ -1,3 +1,7 @@
+<?php
+require("./backend/logic/patients_logic.php")
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

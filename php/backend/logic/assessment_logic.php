@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("./backend/config/database.php");
+require("../../backend/config/database.php");
 
 $first_name = $_SESSION["first_name"];
 $middle_name = $_SESSION["middle_name"];

@@ -1,3 +1,7 @@
+<?php
+require("./backend/logic/vitals_logic.php")
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +15,7 @@
 <body>
     <div class="container">
         <h2>Vitals Form</h2>
-        <form action="" method="POST">
+        <form action="./backend/actions/save_vitals.php" method="POST">
             <div class="patient_name">
                 <label for="patient_name">Patient's Name:</label>
                 <input type="text" name="patient_name" id="patient_name" value="<?php echo $first_name." ".$middle_name." ".$last_name?>" readonly>

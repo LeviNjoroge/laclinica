@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("./backend/config/database.php");
+require("../../backend/config/database.php");
 
 if (isset($_POST["submit"])) {
     $first_name = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -25,7 +25,7 @@ if (isset($_POST["submit"])) {
     $_SESSION["last_name"] = $last_name;
     $_SESSION["patient_number"] = $patient_number;
 
-    header("Location: ./vitals_form.php");
+    header("Location: ../../vitals_form.php");
     exit;
 }
 
