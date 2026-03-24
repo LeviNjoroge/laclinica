@@ -2,7 +2,18 @@
 require("./backend/config/database.php");
 
 // required details: Patients_name, Age, BMI Status [Underweight, Normal, Overweight], Last Assessment Date
-$patients_listing_query = "SELECT FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, BMI, VISIT_DATE
+if (isset($_POST['patients_listing_date']) && $_POST['patients_listing_date'] != '') {
+    $date = $_POST['patients_listing_date'];
+    $patients_listing_query = "SELECT DISTINCT FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, BMI, VISIT_DATE
+                                FROM PATIENTS_REGISTRATION P
+                                JOIN VITALS_RECORDS V
+                                ON P.PATIENT_NUMBER = V.PATIENT_NUMBER
+                                AND V.VISIT_DATE = (SELECT MAX(V2.VISIT_DATE)
+			                                    FROM VITALS_RECORDS V2
+			                                    WHERE V2.PATIENT_NUMBER = P.PATIENT_NUMBER)
+                                AND V.VISIT_DATE = '$date'";
+} else{
+    $patients_listing_query = "SELECT DISTINCT FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, BMI, VISIT_DATE
                             FROM PATIENTS_REGISTRATION P
                             JOIN VITALS_RECORDS V
                             ON P.PATIENT_NUMBER = V.PATIENT_NUMBER
@@ -10,9 +21,8 @@ $patients_listing_query = "SELECT FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BI
 			                                    FROM VITALS_RECORDS V2
 			                                    WHERE V2.PATIENT_NUMBER = P.PATIENT_NUMBER)";
 
+}
 $patients_listing = mysqli_query($conn, $patients_listing_query);
-
-$current_date = date("Y-m-d");
 
 function BMI_Comment($BMI){
     if  ($BMI<18.5){
@@ -29,19 +39,6 @@ function calculate_AGE($date_of_birth){
     $today = new DateTime();
     $age = $today->diff($dob)->y;
     return $age;
-}
-
-if (isset($_POST['patients_listing_date']) && $_POST['patients_listing_date'] != '') {
-    $date = $_POST['patients_listing_date'];
-    $patients_listing_query = "SELECT FIRST_NAME, MIDDLE_NAME, LAST_NAME, DATE_OF_BIRTH, BMI, VISIT_DATE
-                                FROM PATIENTS_REGISTRATION P
-                                JOIN VITALS_RECORDS V
-                                ON P.PATIENT_NUMBER = V.PATIENT_NUMBER
-                                AND V.VISIT_DATE = (SELECT MAX(V2.VISIT_DATE)
-			                                    FROM VITALS_RECORDS V2
-			                                    WHERE V2.PATIENT_NUMBER = P.PATIENT_NUMBER)
-                                AND V.VISIT_DATE = '$date'";
-    $patients_listing = mysqli_query($conn, $patients_listing_query);
 }
 ?>
 
@@ -65,11 +62,6 @@ if (isset($_POST['patients_listing_date']) && $_POST['patients_listing_date'] !=
             </form>
         </div>
         <?php
-            if (isset($date)) {
-                echo "<p>Showing records for: ".$date."</p>";
-            } else {
-                echo "<p>Showing latest records</p>";
-            }
         ?>
 
         <table>
@@ -93,12 +85,13 @@ if (isset($_POST['patients_listing_date']) && $_POST['patients_listing_date'] !=
                                 echo "<td>".$patient['VISIT_DATE']."</td>";
                                 echo "</tr>";
                             }
-                        } else {
-                        echo "<tr>";
-                            for($i = 0; $i< 4; $i++){
-                                echo "<td> N/A </td>";
-                            }
-                        echo "</tr>";
+                        } 
+                        else {
+                            echo "<tr>";
+                                for($i = 0; $i< 4; $i++){
+                                    echo "<td> N/A </td>";
+                                }
+                            echo "</tr>";
                         }
                     ?>
             </tbody>

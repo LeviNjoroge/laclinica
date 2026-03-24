@@ -1,16 +1,11 @@
 <?php
-// session_start();
+session_start();
 require("./backend/config/database.php");
 
-// $first_name = $_SESSION["first_name"];
-// $middle_name = $_SESSION["middle_name"];
-// $last_name = $_SESSION["last_name"];
-// $patient_number = $_SESSION["patient_number"];
-
-$first_name = "Joe";
-$middle_name = "Underson";
-$last_name = "Doe";
-$patient_number = 101;
+$first_name = $_SESSION["first_name"];
+$middle_name = $_SESSION["middle_name"];
+$last_name = $_SESSION["last_name"];
+$patient_number = $_SESSION["patient_number"];
 
 if (isset($_POST["submit"])) {
     $visit_date = $_POST["visit_date"];
@@ -47,7 +42,7 @@ if (isset($_POST["submit"])) {
 <body>
     <div class="container">
         <h2>Overweight Assessment Form</h2>
-        <form action="">
+        <form action="" method="POST">
             <div class="patient_name">
                 <label for="patient_name">Patient's Name:</label>
                 <input type="text" name="patient_name" id="patient_name" value="<?php echo $first_name . " " . $middle_name . " " . $last_name ?>" readonly>
@@ -60,14 +55,14 @@ if (isset($_POST["submit"])) {
 
             <div class="gen_health">
                 <label for="gen_health">General Health:</label>
-                <input type="radio" name="gen_health" id="Good"> Good
-                <input type="radio" name="gen_health" id="Poor"> Poor
+                <input type="radio" name="gen_health" id="Good" value="Good"> Good
+                <input type="radio" name="gen_health" id="Poor" value="Poor"> Poor
             </div>
 
             <div class="been_on_diet">
                 <label for="been_on_diet">Have you ever been on a diet to lose weight?</label>
-                <input type="radio" name="been_on_diet" id="Yes"> Yes
-                <input type="radio" name="been_on_diet" id="No"> No
+                <input type="radio" name="been_on_diet" id="Yes" value="Yes"> Yes
+                <input type="radio" name="been_on_diet" id="No" value="No"> No
             </div>
 
             <div class="comments">
@@ -81,10 +76,13 @@ if (isset($_POST["submit"])) {
         </form>
     </div>
     <script>
-        <?php if(isset($message))  ?>
         function clearForm() {
             document.querySelector("form").reset();
         }
     </script>
+    <?php if (isset($message)){
+            echo '<script> alert('.$message . '); </script>';
+        }
+    ?>
 </body>
 </html>

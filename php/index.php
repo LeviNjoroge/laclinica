@@ -15,11 +15,11 @@ if (isset($_POST["submit"])) {
     $message;
     $check_patient = mysqli_query($conn, "SELECT * FROM PATIENTS_REGISTRATION WHERE patient_number = '$patient_number'");
     if (mysqli_num_rows($check_patient) > 0) {
-        $message = "Patient already registered!";
+        echo '<script> alert("Patient already registered!") </script>';
     } else {
         $query_insert_data_into_patients_reg_table = "INSERT INTO PATIENTS_REGISTRATION VALUES('$patient_number', '$first_name','$middle_name','$last_name', '$gender', '$date_of_birth', '$reg_date')";
         $insert_data_into_patients_reg_table = mysqli_query($conn, $query_insert_data_into_patients_reg_table);
-        $message = "Patient registered successfully!";
+        echo '<script> alert("Patient registered successfully!") </script>';
     }
     $_SESSION["first_name"] = $first_name;
     $_SESSION["middle_name"] = $middle_name;
@@ -85,7 +85,7 @@ if (isset($_POST["cancel"])) {
                 <input type="date" name="registration_date" id="registration_date" required>
             </div>
 
-            <input type="button" value="Cancel" id="cancel_button" name="cancel">
+            <input type="button" value="Cancel" id="cancel_button" onclick="clearForm()">
 
             <input type="submit" value="Submit" id="submit_button" name="submit">
         </form>
@@ -95,6 +95,11 @@ if (isset($_POST["cancel"])) {
                 alert("<?= $message ?>");
             </script>
     <?php endif; ?>
+    <script>
+        function clearForm() {
+            document.querySelector("form").reset();
+        }
+    </script>
 </body>
 
 </html>
