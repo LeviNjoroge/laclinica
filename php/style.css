@@ -62,3 +62,29 @@ table{
 #submit_button:hover{
     background-color: rgba(0, 0, 255, 0.8);
 }
+
+table{
+    border: 1px solid rgba(0, 119, 255, 0.9);
+    border-radius: 10px;
+}
+
+tr{
+    background-color: rgba(0, 255, 255, 0.2);
+}
+tr:hover{
+    background-color: rgba(0, 255, 255, 0.4);
+}
+
+.table_head{
+    background-color: rgba(0, 255, 255, 0.9);
+}
+
+td{
+    padding: 10px;
+    border-radius: 5px;
+}
+th{
+    text-align: left;
+    padding: 12px;
+    border-radius: 5px;
+}
