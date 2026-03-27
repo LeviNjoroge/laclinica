@@ -1,0 +1,116 @@
+<!-- 
+ prolly the action part - where to send the form to 
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Patient Registration Form</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Patient Registration Form</h2>
+      <form
+        method="POST"
+        id="patient_registration_form"
+        action="http://127.0.0.1:3000/api/patients_registration"
+      >
+        <div class="first_name">
+          <label for="first_name">First Name:</label>
+          <input
+            name="first_name"
+            type="text"
+            id="first_name"
+            placeholder="Joe"
+            required
+          />
+        </div>
+
+        <div class="middle_name">
+          <label for="middle_name">Middle Name:</label>
+          <input
+            name="middle_name"
+            type="text"
+            id="middle_name"
+            placeholder="Bloggs"
+          />
+        </div>
+
+        <div class="last_name">
+          <label for="last_name">Last Name:</label>
+          <input
+            name="last_name"
+            type="text"
+            id="last_name"
+            placeholder="Doe"
+            required
+          />
+        </div>
+
+        <div class="gender">
+          <label for="gender">Gender:</label>
+          <input type="radio" name="gender" id="gender" value="Male" required />
+          Male
+          <input type="radio" name="gender" id="gender" value="Female" /> Female
+        </div>
+
+        <div class="date_of_birth">
+          <label for="date_of_birth">Date of birth: </label>
+          <input type="date" name="date_of_birth" id="date_of_birth" required />
+        </div>
+
+        <div class="patient_number">
+          <label for="patient_number">Patient Number:</label>
+          <input
+            type="number"
+            name="patient_number"
+            id="patient_number"
+            required
+          />
+        </div>
+
+        <div class="reg_date">
+          <label for="registration_date">Registration Date:</label>
+          <input
+            type="date"
+            name="registration_date"
+            id="registration_date"
+            required
+          />
+        </div>
+
+        <input
+          type="button"
+          value="Cancel"
+          id="cancel_button"
+          onclick="clearForm()"
+        />
+
+        <input type="submit" value="Submit" id="submit_button" name="submit"/>
+      </form>
+    </div>
+    <script>
+      function clearForm() {
+        document.querySelector("form").reset();
+      }
+
+      // create session storage on submit
+      document.getElementById("patient_registration_form").onsubmit = () => {
+      const patient_number = document.getElementById("patient_number").value
+      const first_name = document.getElementById("first_name").value
+      const middle_name = document.getElementById("middle_name").value
+      const last_name = document.getElementById("last_name").value
+
+      const patient_full_name =  `${first_name} ${middle_name} ${last_name}`;
+
+      sessionStorage.setItem("patient_number", patient_number);
+      sessionStorage.setItem("patient_name", patient_full_name);
+      console.log({"message":"successfully created session", "data":[sessionStorage.getItem("patient_number"), sessionStorage.getItem("patient_name")]})
+      }
+    </script>
+  </body>
+</html>

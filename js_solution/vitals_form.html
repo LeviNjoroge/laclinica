@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Vitals form</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Vitals Form</h2>
+      <form action="http://localhost:3000/api/vitals" method="POST" id="vitals_form">
+
+        <input type="number" name="patient_number" id="patient_number" style="display: none" />
+
+        <div class="patient_name">
+            <label for="patient_name">Patient's Name:</label>
+            <input type="text" name="patient_name" id="patient_name" readonly />
+        </div>
+
+        <div class="visit_date">
+          <label for="visit_date">Visit Date:</label>
+          <input type="date" name="visit_date" id="visit_date" required />
+        </div>
+
+        <div class="height">
+          <label for="height">Height (cm):</label>
+          <input type="number" name="height" id="height" required />
+        </div>
+
+        <div class="weight">
+          <label for="weight">Weight (KG):</label>
+          <input type="number" name="weight" id="weight" required />
+        </div>
+
+        <div class="bmi" style="display: none">
+          <label for="bmi">BMI: </label>
+          <input type="number" name="bmi" id="bmi" readonly />
+        </div>
+
+        <input type="button" value="Cancel" id="cancel_button" onclick="clearForm()"/>
+
+        <input type="submit" value="Submit" id="submit_button" name="submit"/>
+      </form>
+    </div>
+    <script>
+      
+      // get values from session storage and assign the elements with them
+      document.getElementById("patient_number").value = sessionStorage.getItem("patient_number")
+      document.getElementById("patient_name").value = sessionStorage.getItem("patient_name")
+
+      console.log("Testing...")
+        // clears form on submit
+      function clearForm() {
+        document.querySelector("form").reset();
+      }
+
+      // handle form submit
+
+      async function handleSubmit(e) {
+        // prevent form from reloading on submit
+        e.preventDefault()
+        console.log("Jus got into the submission part")
+
+        // assign values readying for export to server
+        const patient_number = parseInt(document.getElementById("patient_number").value);
+        const visit_date = document.getElementById("visit_date").value;
+        const height = parseFloat(document.getElementById("height").value);
+        const weight = parseFloat(document.getElementById("weight").value);
+
+        // send values to server and perform a redirect
+        try {
+          const response = await fetch("http://localhost:3000/api/vitals", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              patient_number,
+              visit_date,
+              height,
+              weight
+            })
+          });
+
+          const result = await response.json();
+
+          // handle redirect based on location from 
+          window.location.href = result.redirect_location;
+
+        } catch (error) {
+            // incase of a failure log it
+          console.log("Error submitting vitals:", error);
+          alert("Failed to submit vitals");
+        }
+      }
+
+      // document.getElementById("vitals_form").addEventListener("submit",handleSubmit(event))
+    </script>
+  </body>
+</html>

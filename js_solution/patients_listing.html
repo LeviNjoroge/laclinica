@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Patients Listing</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Patients Listing</h2>
+      <div class="patients_listing_date">
+        <form id="date_filter_form">
+          <label for="patients_listing_date">Date:</label>
+          <input
+            type="date"
+            name="patients_listing_date"
+            id="patients_listing_date"
+          />
+          <input type="submit" value="Filter" />
+        </form>
+      </div>
+      <div class="table_container">
+      <table>
+        <thead>
+          <tr class="table_head">
+            <th>Patient Name</th>
+            <th>Age</th>
+            <th>BMI Status</th>
+            <th>Last Assessment Date</th>
+          </tr>
+        </thead>
+        <tbody id="patients_details">
+          <!-- add table data here-->
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <script>
+      async function getPatientsList(filterDate = "") {
+        let url = "http://127.0.0.1:3000/api/patient_listing";
+        let table_body = document.getElementById("patients_details");
+        table_body.innerHTML = `<tr><td colspan="4">Fetching patients' records...</td></tr>`;
+        try {
+          if (filterDate) {
+            url += `?date=${filterDate}`;
+          }
+          const response = await fetch(url);
+          const patients_listing = await response.json();
+
+          table_body.innerHTML = ``;
+
+          if (patients_listing.length > 0) {
+            patients_listing.forEach((patient) => {
+              table_body.innerHTML += `
+                <tr>
+                    <td>${patient.FIRST_NAME} ${patient.MIDDLE_NAME} ${patient.LAST_NAME}</td>
+                    <td>${calculateAge(patient.DATE_OF_BIRTH)}</td>
+                    <td>${BMIComment(patient.BMI)}</td>
+                    <td>${formatVisitDate(patient.VISIT_DATE)}</td>
+                </tr>
+            `;
+            });
+          } else {
+            table_body.innerHTML = `<tr><td colspan="4">No records found.</td></tr>`;
+          }
+        } catch (error) {
+          table_body.innerHTML = `<tr><td colspan="4">Failed to load patients' records.</td></tr>`;
+          console.log(error);
+        }
+      }
+      getPatientsList();
+
+      function formatVisitDate(visit_date) {
+        const date = new Date(visit_date);
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      }
+
+      function calculateAge(date_of_birth) {
+        const patient_DOB = new Date(date_of_birth);
+        const current_date = new Date();
+        return current_date.getFullYear() - patient_DOB.getFullYear();
+      }
+
+      function BMIComment(BMI) {
+        if (BMI < 18.5) {
+          return "Underweight";
+        } else if (BMI < 25) {
+          return "Normal";
+        } else {
+          return "Overweight";
+        }
+      }
+
+      const form = document.getElementById("date_filter_form");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // prevent page reload
+        const filterDate = document.getElementById(
+          "patients_listing_date",
+        ).value;
+
+        // Clear previous results
+        document.getElementById("patients_details").innerHTML = "";
+
+        // Fetch filtered patient list
+        getPatientsList(filterDate);
+      });
+    </script>
+  </body>
+</html>

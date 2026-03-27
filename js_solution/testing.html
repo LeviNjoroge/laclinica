@@ -1,0 +1,22 @@
+<script>
+
+    function createCookie(name, value) {
+  const date = new Date();
+  date.setTime(date.getTime() + 60 * 60 * 1000) //1hr
+  let expiry = `expires = ${date.toUTCString()}`;
+  document.cookie = `${name} = ${value}; ${expiry}`;
+}
+createCookie("patient_name", "Jay")
+createCookie("patient_number", 12120)
+function decodeCookie(name) {
+  const decodedCookie = decodeURIComponent(document.cookie).split("; ");
+  let value = null;
+    decodedCookie.forEach(element=>{
+        if(element.indexOf(name) === 0){
+            value = element.substring(name.length + 1)
+        }
+    })
+  return(value)
+}
+decodeCookie("patient_name");
+</script>
