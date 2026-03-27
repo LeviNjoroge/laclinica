@@ -27,7 +27,7 @@ if (isset($_POST["submit"])) {
                 $message = 'Error saving details!';
             }
         }
-    }
+    
 
     // overweight assessment logic
     } elseif ($form_type === "overweight") {
@@ -53,5 +53,5 @@ if (isset($_POST["submit"])) {
             }
         }
     }
-
+}
 ?>
