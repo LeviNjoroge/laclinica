@@ -218,7 +218,7 @@ CREATE TABLE IF NOT EXISTS PATIENTS_REGISTRATION (
     FIRST_NAME VARCHAR(50) NOT NULL,
     MIDDLE_NAME VARCHAR(50) NULL,
     LAST_NAME VARCHAR(50) NOT NULL,
-    GENDER VARCHAR(10) NOT NULL,
+    GENDER ENUM('Male','Female') NOT NULL,
     DATE_OF_BIRTH DATE NOT NULL,
     REGISTRATION_DATE DATE NOT NULL
 );
@@ -234,16 +234,16 @@ CREATE TABLE IF NOT EXISTS VITALS_RECORDS (
 CREATE TABLE IF NOT EXISTS ASSESSMENT_RECORDS (
     PATIENT_NUMBER INT NOT NULL,
     VISIT_DATE DATE NOT NULL,
-    GEN_HEALTH VARCHAR(10) NOT NULL,
-    ON_DRUGS VARCHAR(5) NOT NULL,
+    GEN_HEALTH ENUM('Good', 'Poor') NOT NULL,
+    ON_DRUGS ENUM('No', 'Yes') NOT NULL,
     COMMENTS TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS OVERWEIGHT_ASSESSMENT_RECORDS (
     PATIENT_NUMBER INT NOT NULL,
     VISIT_DATE DATE NOT NULL,
-    GEN_HEALTH VARCHAR(10) NOT NULL,
-    BEEN_ON_DIET VARCHAR(5) NOT NULL,
+    GEN_HEALTH ENUM('Good', 'Poor') NOT NULL,
+    BEEN_ON_DIET ENUM('No', 'Yes') NOT NULL,
     COMMENTS TEXT NOT NULL
 );
 ```
@@ -261,7 +261,7 @@ Open:
 
 ## Quick Demo Script
 
-1. Register a new patient on `index.php`.
+1. Register a new patient on `index.php` or `index.html`(for js)
 2. Enter vitals on `vitals_form.php`.
 3. Observe routing behavior:
    - BMI `<= 25` -> `general_assessment_form.php`
@@ -289,4 +289,4 @@ Open:
 
 ---
 
-If you are reviewing this submission, start from `index.php` and follow the flow end-to-end.
+If you are reviewing this submission, start from `index.php` or `index.html` and follow the flow end-to-end.
