@@ -7,7 +7,7 @@
 
 ## Added Module: `js_solution` (JavaScript + Node.js)
 
-The repository now includes `js_solution/`, which is a JavaScript-based implementation of the same assignment flow:
+The repository now includes `js_solution/`, which is a JavaScript-based implementation of the same flow:
 - Frontend pages in HTML/CSS (`index.html`, `vitals_form.html`, `general_assessment_form.html`, `overweight_assessment_form.html`, `patients_listing.html`)
 - Backend API in Node.js + Express (`js_solution/backend/`)
 - MySQL persistence through `mysql2` queries in `js_solution/backend/database.js`
